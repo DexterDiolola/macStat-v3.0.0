@@ -3,14 +3,14 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `Devices`(IN `cond` VARCHAR(180), IN
     NO SQL
 BEGIN
         IF cond = 'opr-get-devices' THEN
-        SELECT macs.mac, macs_users.owner AS operator, macs.label AS site, macs.dateCreated FROM macs
+        SELECT macs.mac, macs_users.owner AS operator, macs.label AS site, DATE_FORMAT(macs.dateCreated, '%Y-%m-%d') AS dateCreated FROM macs
         LEFT OUTER JOIN macs_users ON macs_users.mac = macs.mac
         WHERE macs_users.owner = userParam
         ORDER BY macs.dateCreated DESC;
         
 
         ELSEIF cond = 'par-get-devices' THEN
-        SELECT macs.mac, macs_users.owner AS operator, macs.label AS site, macs.dateCreated FROM macs
+        SELECT macs.mac, macs_users.owner AS operator, macs.label AS site, DATE_FORMAT(macs.dateCreated, '%Y-%m-%d') AS dateCreated FROM macs
         LEFT OUTER JOIN macs_users ON macs_users.mac = macs.mac
         LEFT OUTER JOIN partners ON partners.operator = macs_users.owner
         WHERE partners.partner = userParam
